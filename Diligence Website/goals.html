@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diligence - Goals</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+    <link rel="stylesheet" href="goals.css">
+    <link rel="stylesheet" href="sidebar.css">
+
+    <link rel="icon" href="assets/tabIcon.jpg">
+
+    <script src="goals.js" defer></script>
+    <script src="sidebar.js" defer></script>
+</head>
+
+<body>
+
+<nav class="sidebar close">
+    <header>
+        <div class="image-text">
+            <span class="image">
+                <img src="assets/tabIcon.jpg" alt="logo">
+            </span>
+
+            <div class="text header-text">
+                <span class="name">Full Name</span>
+                <span class="profession">User / Admin</span>
+            </div>
+        </div>
+
+        <i class="bx bx-chevron-right toggle"></i>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <ul class="menu-links">
+                <li class="nav-link">
+                    <a href="dashboard.html">
+                        <i class="bx bx-home-alt icon"></i>
+                        <span class="text nav-text">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="goals.html">
+                        <i class="bx bxs-flag icon"></i>
+                        <span class="text nav-text">Goals</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="projects.html">
+                        <i class="bx bx-folder-open icon"></i>
+                        <span class="text nav-text">Projects</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="tasks.html">
+                        <i class="bx bxs-check-circle icon"></i>
+                        <span class="text nav-text">Tasks</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="notes.html">
+                        <i class="bx bx-note icon"></i>
+                        <span class="text nav-text">Notes</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="bottom-content">
+
+            <li class="mode">
+                <div class="moon-sun">
+                    <i class="bx bx-moon icon moon"></i>
+                    <i class="bx bx-sun icon sun"></i>
+                </div>
+
+                <span class="mode-text text">Dark Mode</span>
+
+                <div class="toggle-switch">
+                    <span class="switch"></span>
+                </div>
+            </li>
+        </div>
+    </div>
+</nav>
+
+
+
+    <section class="home main-content">
+
+        <div class="header-breadcrumbs animate-fade-in">
+            Productivity
+        </div>
+
+        <div class="page-header animate-fade-in">
+            <div>
+                <h1 class="page-title">Goals</h1>
+                <span class="page-subtitle">
+                    Set goals, track your progress, and stay focused.
+                </span>
+            </div>
+
+            <button class="goals-add-button" id="add-goal-button" type="button">
+                <i class="bx bx-plus"></i>
+                Add New Goal
+            </button>
+        </div>
+
+        <div class="goals-statistics">
+
+            <div class="card goal-statistic-card animate-fade-in">
+                <div class="goal-statistic-icon">
+                    <i class="bx bxs-flag"></i>
+                </div>
+
+                <div class="goal-statistic-information">
+                    <span class="goal-statistic-value" id="total-goals-count">0</span>
+                    <span class="goal-statistic-label">Total Goals</span>
+                </div>
+            </div>
+
+            <div class="card goal-statistic-card animate-fade-in">
+                <div class="goal-statistic-icon">
+                    <i class="bx bx-loader-circle"></i>
+                </div>
+
+                <div class="goal-statistic-information">
+                    <span class="goal-statistic-value" id="active-goals-count">0</span>
+                    <span class="goal-statistic-label">Active Goals</span>
+                </div>
+            </div>
+
+            <div class="card goal-statistic-card animate-fade-in">
+                <div class="goal-statistic-icon">
+                    <i class="bx bxs-check-circle"></i>
+                </div>
+
+                <div class="goal-statistic-information">
+                    <span class="goal-statistic-value" id="completed-goals-count">0</span>
+                    <span class="goal-statistic-label">Completed Goals</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="goals-section-header">
+            <div>
+                <h2>Your Goals</h2>
+                <span>Track your current objectives and progress.</span>
+            </div>
+        </div>
+
+        <div class="goals-list" id="goals-list"></div>
+
+        <div class="empty-goals-state" id="empty-goals-state">
+            <div class="empty-goals-icon">
+                <i class="bx bx-target-lock"></i>
+            </div>
+
+            <h2>No goals yet</h2>
+
+            <p>
+                Create your first goal and start tracking your progress.
+            </p>
+
+            <button class="goals-empty-button" id="empty-add-goal-button" type="button">
+                <i class="bx bx-plus"></i>
+                Create Your First Goal
+            </button>
+        </div>
+
+    </section>
+
+    <div class="goal-modal-overlay" id="goal-modal-overlay">
+
+        <div class="goal-modal">
+
+            <div class="goal-modal-header">
+                <div>
+                    <h2 id="goal-modal-title">Add New Goal</h2>
+                    <span>Create a goal and track your progress.</span>
+                </div>
+
+                <button class="goal-modal-close" id="close-goal-modal" type="button">
+                    <i class="bx bx-x"></i>
+                </button>
+            </div>
+
+            <form id="goal-form">
+
+                <div class="goal-form-group">
+                    <label for="goal-title">Goal Title</label>
+                    <input
+                        type="text"
+                        id="goal-title"
+                        placeholder="Enter your goal"
+                        required
+                    >
+                </div>
+
+                <div class="goal-form-group">
+                    <label for="goal-description">Description</label>
+                    <textarea
+                        id="goal-description"
+                        rows="4"
+                        placeholder="Describe what you want to accomplish..."
+                    ></textarea>
+                </div>
+
+                <div class="goal-form-row">
+
+                    <div class="goal-form-group">
+                        <label for="goal-deadline">Deadline</label>
+                        <input
+                            type="date"
+                            id="goal-deadline"
+                            required
+                        >
+                    </div>
+
+                    <div class="goal-form-group">
+                        <label for="goal-progress">Progress</label>
+
+                        <div class="goal-progress-input">
+                            <input
+                                type="number"
+                                id="goal-progress"
+                                min="0"
+                                max="100"
+                                value="0"
+                                required
+                            >
+
+                            <span>%</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="goal-modal-actions">
+
+                    <button
+                        class="goal-cancel-button"
+                        id="cancel-goal-button"
+                        type="button"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        class="goal-save-button"
+                        type="submit"
+                    >
+                        Save Goal
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diligence - Projects</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+    <link rel="stylesheet" href="projects.css">
+    <link rel="stylesheet" href="sidebar.css">
+
+    <link rel="icon" href="assets/tabIcon.jpg">
+
+    <script src="projects.js" defer></script>
+    <script src="sidebar.js" defer></script>
+</head>
+<body>
+
+ <nav class="sidebar close">
+    <header>
+        <div class="image-text">
+            <span class="image">
+                <img src="assets/tabIcon.jpg" alt="logo">
+            </span>
+
+            <div class="text header-text">
+                <span class="name">Full Name</span>
+                <span class="profession">User / Admin</span>
+            </div>
+        </div>
+
+        <i class="bx bx-chevron-right toggle"></i>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <ul class="menu-links">
+                <li class="nav-link">
+                    <a href="dashboard.html">
+                        <i class="bx bx-home-alt icon"></i>
+                        <span class="text nav-text">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="goals.html">
+                        <i class="bx bxs-flag icon"></i>
+                        <span class="text nav-text">Goals</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="projects.html">
+                        <i class="bx bx-folder-open icon"></i>
+                        <span class="text nav-text">Projects</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="tasks.html">
+                        <i class="bx bxs-check-circle icon"></i>
+                        <span class="text nav-text">Tasks</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="notes.html">
+                        <i class="bx bx-note icon"></i>
+                        <span class="text nav-text">Notes</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="bottom-content">
+            <li>
+
+            <li class="mode">
+                <div class="moon-sun">
+                    <i class="bx bx-moon icon moon"></i>
+                    <i class="bx bx-sun icon sun"></i>
+                </div>
+
+                <span class="mode-text text">Dark Mode</span>
+
+                <div class="toggle-switch">
+                    <span class="switch"></span>
+                </div>
+            </li>
+        </div>
+    </div>
+</nav>
+
+
+
+    <section class="home main-content">
+
+        <div class="header-breadcrumbs animate-fade-in">
+            Workspaces
+        </div>
+
+        <div class="page-header animate-fade-in">
+            <div>
+                <h1 class="page-title">Projects</h1>
+                <span class="page-subtitle">
+                    Organize your work, manage project pipelines, and track individual action items.
+                </span>
+            </div>
+
+            <button class="projects-add-button" id="add-project-button" type="button">
+                <i class="bx bx-plus"></i>
+                Add New Project
+            </button>
+        </div>
+
+        <div class="projects-statistics">
+
+            <div class="card project-statistic-card animate-fade-in">
+                <div class="project-statistic-icon">
+                    <i class="bx bx-folder"></i>
+                </div>
+
+                <div class="project-statistic-information">
+                    <span class="project-statistic-value" id="total-projects-count">0</span>
+                    <span class="project-statistic-label">Total Projects</span>
+                </div>
+            </div>
+
+            <div class="card project-statistic-card animate-fade-in">
+                <div class="project-statistic-icon">
+                    <i class="bx bx-time-five"></i>
+                </div>
+
+                <div class="project-statistic-information">
+                    <span class="project-statistic-value" id="in-progress-projects-count">0</span>
+                    <span class="project-statistic-label">In Progress</span>
+                </div>
+            </div>
+
+            <div class="card project-statistic-card animate-fade-in">
+                <div class="project-statistic-icon">
+                    <i class="bx bx-check-double"></i>
+                </div>
+
+                <div class="project-statistic-information">
+                    <span class="project-statistic-value" id="completed-projects-count">0</span>
+                    <span class="project-statistic-label">Completed</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="projects-section-header">
+            <div>
+                <h2>Your Projects</h2>
+                <span>View and manage all ongoing projects and action items.</span>
+            </div>
+        </div>
+
+        <div class="projects-list" id="projects-list"></div>
+
+        <div class="empty-projects-state" id="empty-projects-state">
+            <div class="empty-projects-icon">
+                <i class="bx bx-folder-plus"></i>
+            </div>
+
+            <h2>No projects yet</h2>
+
+            <p>
+                Start building your project workflow by creating your first project card and task list.
+            </p>
+
+            <button class="projects-empty-button" id="empty-add-project-button" type="button">
+                <i class="bx bx-plus"></i>
+                Create Your First Project
+            </button>
+        </div>
+
+    </section>
+
+    <!-- Modal for Project Creation/Editing -->
+    <div class="project-modal-overlay" id="project-modal-overlay">
+
+        <div class="project-modal">
+
+            <div class="project-modal-header">
+                <div>
+                    <h2 id="project-modal-title">Add New Project</h2>
+                    <span>Fill in details and assign specific tasks to this project.</span>
+                </div>
+
+                <button class="project-modal-close" id="close-project-modal" type="button">
+                    <i class="bx bx-x"></i>
+                </button>
+            </div>
+
+            <form id="project-form">
+
+                <div class="project-form-group">
+                    <label for="project-title">Project Title</label>
+                    <input
+                        type="text"
+                        id="project-title"
+                        placeholder="Enter project name"
+                        required
+                    >
+                </div>
+
+                <div class="project-form-group">
+                    <label for="project-description">Description</label>
+                    <textarea
+                        id="project-description"
+                        rows="3"
+                        placeholder="Provide project objectives or details..."
+                    ></textarea>
+                </div>
+
+                <div class="project-form-row">
+
+                    <div class="project-form-group">
+                        <label for="project-status">Status</label>
+                        <select id="project-status" required>
+                            <option value="Planned">Planned</option>
+                            <option value="In Progress" selected>In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+
+                    <div class="project-form-group">
+                        <label for="project-deadline">Deadline</label>
+                        <input
+                            type="date"
+                            id="project-deadline"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <!-- Action Items / Task Checklist Input Box -->
+                <div class="project-form-group">
+                    <label>Project Action Items / Tasks</label>
+                    
+                    <div class="project-task-input-row">
+                        <input
+                            type="text"
+                            id="project-task-input"
+                            placeholder="Add a task (e.g., Wireframe homepage)"
+                        >
+                        <button class="project-add-task-btn" id="add-task-item-btn" type="button">
+                            <i class="bx bx-plus"></i> Add
+                        </button>
+                    </div>
+
+                    <ul class="project-tasks-builder-list" id="project-tasks-builder-list"></ul>
+                </div>
+
+                <div class="project-modal-actions">
+
+                    <button
+                        class="project-cancel-button"
+                        id="cancel-project-button"
+                        type="button"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        class="project-save-button"
+                        type="submit"
+                    >
+                        Save Project
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

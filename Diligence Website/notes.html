@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diligence Dashboard - Notes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="notes.css">
+    <script src="sidebar.js" defer></script>
+</head>
+<body>
+<nav class="sidebar close">
+    <header>
+        <div class="image-text">
+            <span class="image">
+                <img src="assets/tabIcon.jpg" alt="logo">
+            </span>
+
+            <div class="text header-text">
+                <span class="name">Full Name</span>
+                <span class="profession">User / Admin</span>
+            </div>
+        </div>
+
+        <i class="bx bx-chevron-right toggle"></i>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <ul class="menu-links">
+                <li class="nav-link">
+                    <a href="dashboard.html">
+                        <i class="bx bx-home-alt icon"></i>
+                        <span class="text nav-text">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="goals.html">
+                        <i class="bx bxs-flag icon"></i>
+                        <span class="text nav-text">Goals</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="projects.html">
+                        <i class="bx bx-folder-open icon"></i>
+                        <span class="text nav-text">Projects</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="tasks.html">
+                        <i class="bx bxs-check-circle icon"></i>
+                        <span class="text nav-text">Tasks</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="notes.html">
+                        <i class="bx bx-note icon"></i>
+                        <span class="text nav-text">Notes</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="bottom-content">
+
+            <li class="mode">
+                <div class="moon-sun">
+                    <i class="bx bx-moon icon moon"></i>
+                    <i class="bx bx-sun icon sun"></i>
+                </div>
+
+                <span class="mode-text text">Dark Mode</span>
+
+                <div class="toggle-switch">
+                    <span class="switch"></span>
+                </div>
+            </li>
+        </div>
+    </div>
+</nav>
+
+
+
+    <section class="home-section">
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Notes</h1>
+                <p class="header-subtitle">Document long-form thoughts, meeting logs, and detailed references.</p>
+            </div>
+            <button id="open-create-modal-btn" class="primary-btn">
+                <i class="bx bx-plus"></i> Create Note
+            </button>
+        </header>
+
+        <div class="notes-grid" id="notes-container"></div>
+    </section>
+
+    <!-- Large View Note Modal -->
+    <div id="view-note-modal" class="modal-overlay hidden">
+        <div class="modal-card modal-large">
+            <div class="modal-header">
+                <div class="view-header-left">
+                    <span id="view-note-badge" class="note-category-badge">General</span>
+                    <span id="view-note-date" class="note-date-text"></span>
+                </div>
+                <div class="modal-actions">
+                    <button id="view-to-edit-btn" class="secondary-btn small-btn">
+                        <i class="bx bx-edit-alt"></i> Edit
+                    </button>
+                    <button id="close-view-modal-btn" class="icon-btn" type="button">
+                        <i class="bx bx-x"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body view-body">
+                <h2 id="view-note-title" class="view-title"></h2>
+                <div id="view-note-content" class="view-content-body"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Note Modal -->
+    <div id="edit-note-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="edit-modal-title">Create Note</h3>
+                <button id="close-edit-modal-btn" class="icon-btn" type="button">
+                    <i class="bx bx-x"></i>
+                </button>
+            </div>
+            <form id="note-form" class="modal-body">
+                <input type="hidden" id="note-id" value="">
+
+                <div class="form-group">
+                    <label for="note-title-input">Title</label>
+                    <input type="text" id="note-title-input" placeholder="Title of your note..." required>
+                </div>
+
+                <div class="form-group">
+                    <label>Category Tag</label>
+                    <div class="tag-options">
+                        <label class="tag-radio blue">
+                            <input type="radio" name="note-tag" value="General" checked>
+                            <span class="tag-pill">General</span>
+                        </label>
+                        <label class="tag-radio green">
+                            <input type="radio" name="note-tag" value="School">
+                            <span class="tag-pill">School</span>
+                        </label>
+                        <label class="tag-radio purple">
+                            <input type="radio" name="note-tag" value="Personal">
+                            <span class="tag-pill">Personal</span>
+                        </label>
+                        <label class="tag-radio yellow">
+                            <input type="radio" name="note-tag" value="Ideas">
+                            <span class="tag-pill">Ideas</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="note-content-input">Content</label>
+                    <textarea id="note-content-input" rows="10" placeholder="Write your notes here..." required></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="delete-note-btn" class="danger-btn hidden">Delete</button>
+                    <button type="button" id="cancel-edit-modal-btn" class="secondary-btn">Cancel</button>
+                    <button type="submit" class="primary-btn">Save Note</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="notes.js"></script>
+</body>
+</html>

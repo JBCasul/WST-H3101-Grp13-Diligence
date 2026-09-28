@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diligence Dashboard - Tasks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="tasks.css">
+    <script src="sidebar.js" defer></script>
+</head>
+<body>
+ <nav class="sidebar close">
+    <header>
+        <div class="image-text">
+            <span class="image">
+                <img src="assets/tabIcon.jpg" alt="logo">
+            </span>
+
+            <div class="text header-text">
+                <span class="name">Full Name</span>
+                <span class="profession">User / Admin</span>
+            </div>
+        </div>
+
+        <i class="bx bx-chevron-right toggle"></i>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <ul class="menu-links">
+                <li class="nav-link">
+                    <a href="dashboard.html">
+                        <i class="bx bx-home-alt icon"></i>
+                        <span class="text nav-text">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="goals.html">
+                        <i class="bx bxs-flag icon"></i>
+                        <span class="text nav-text">Goals</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="projects.html">
+                        <i class="bx bx-folder-open icon"></i>
+                        <span class="text nav-text">Projects</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="tasks.html">
+                        <i class="bx bxs-check-circle icon"></i>
+                        <span class="text nav-text">Tasks</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="notes.html">
+                        <i class="bx bx-note icon"></i>
+                        <span class="text nav-text">Notes</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="bottom-content">
+
+            <li class="mode">
+                <div class="moon-sun">
+                    <i class="bx bx-moon icon moon"></i>
+                    <i class="bx bx-sun icon sun"></i>
+                </div>
+
+                <span class="mode-text text">Dark Mode</span>
+
+                <div class="toggle-switch">
+                    <span class="switch"></span>
+                </div>
+            </li>
+        </div>
+    </div>
+</nav>
+
+    <section class="home-section">
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Tasks</h1>
+                <p class="header-subtitle">Manage your daily schedule, upcoming deadlines, and today's priority items.</p>
+            </div>
+            <button id="open-task-modal-btn" class="primary-btn">
+                <i class="bx bx-plus"></i> Add New Task
+            </button>
+        </header>
+
+        <div class="tasks-dashboard-grid">
+            <section class="dashboard-card schedule-section">
+                <div class="card-header">
+                    <h2><i class="bx bx-calendar-event"></i> Plot Your Schedule</h2>
+                </div>
+                <div class="task-list" id="scheduled-tasks-list"></div>
+            </section>
+
+            <section class="dashboard-card deadlines-section">
+                <div class="card-header">
+                    <h2><i class="bx bx-alarm-exclamation"></i> Upcoming Deadlines</h2>
+                </div>
+                <div class="task-list" id="upcoming-deadlines-list"></div>
+            </section>
+
+            <section class="dashboard-card today-section">
+                <div class="card-header">
+                    <h2><i class="bx bx-sun"></i> Today's Tasks</h2>
+                    <span id="tasks-completed-summary">0 of 0 completed</span>
+                </div>
+                <div class="task-list" id="today-tasks-list"></div>
+            </section>
+        </div>
+    </section>
+
+    <div id="task-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-title">Add New Task</h3>
+                <button id="close-task-modal-btn" class="icon-btn" type="button">
+                    <i class="bx bx-x"></i>
+                </button>
+            </div>
+            <form id="add-task-form" class="modal-body">
+                <input type="hidden" id="task-id" value="">
+
+                <div class="form-group">
+                    <label for="task-section">Section Target</label>
+                    <select id="task-section">
+                        <option value="schedule">Plot Your Schedule</option>
+                        <option value="deadline">Upcoming Deadline</option>
+                        <option value="today">Today's Task</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="task-name">Task Name</label>
+                    <input type="text" id="task-name" placeholder="e.g. Prepare Quarter Presentation" required>
+                </div>
+
+                <div id="schedule-fields">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-category">Category</label>
+                            <input type="text" id="task-category" placeholder="e.g. Work, Personal">
+                        </div>
+                        <div class="form-group">
+                            <label for="task-repeat">Repeat Pattern</label>
+                            <select id="task-repeat">
+                                <option value="none">None</option>
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-date">Date</label>
+                            <input type="date" id="task-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="task-time">Time</label>
+                            <input type="time" id="task-time">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="deadline-fields" class="hidden">
+                    <div class="form-group">
+                        <label for="task-deadline-date">Date / Deadline</label>
+                        <input type="date" id="task-deadline-date">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="cancel-task-modal-btn" class="secondary-btn">Cancel</button>
+                    <button type="submit" class="primary-btn">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="tasks.js"></script>
+</body>
+</html>

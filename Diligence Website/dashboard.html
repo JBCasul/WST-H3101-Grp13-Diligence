@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diligence - Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+<link rel="stylesheet" href="dashboard.css">
+<link rel="stylesheet" href="sidebar.css">
+
+<link rel="icon" href="assets/tabIcon.jpg">
+
+<script src="dashboard.js" defer></script>
+<script src="sidebar.js" defer></script>
+
+</head>
+
+<body>
+
+<nav class="sidebar close">
+    <header>
+        <div class="image-text">
+            <span class="image">
+                <img src="assets/tabIcon.jpg" alt="logo">
+            </span>
+
+            <div class="text header-text">
+                <span class="name">Full Name</span>
+                <span class="profession">User / Admin</span>
+            </div>
+        </div>
+
+        <i class="bx bx-chevron-right toggle"></i>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <ul class="menu-links">
+                <li class="nav-link">
+                    <a href="dashboard.html">
+                        <i class="bx bx-home-alt icon"></i>
+                        <span class="text nav-text">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="goals.html">
+                        <i class="bx bxs-flag icon"></i>
+                        <span class="text nav-text">Goals</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="projects.html">
+                        <i class="bx bx-folder-open icon"></i>
+                        <span class="text nav-text">Projects</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="tasks.html">
+                        <i class="bx bxs-check-circle icon"></i>
+                        <span class="text nav-text">Tasks</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="notes.html">
+                        <i class="bx bx-note icon"></i>
+                        <span class="text nav-text">Notes</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="bottom-content">
+
+            <li class="mode">
+                <div class="moon-sun">
+                    <i class="bx bx-moon icon moon"></i>
+                    <i class="bx bx-sun icon sun"></i>
+                </div>
+
+                <span class="mode-text text">Dark Mode</span>
+
+                <div class="toggle-switch">
+                    <span class="switch"></span>
+                </div>
+            </li>
+        </div>
+    </div>
+</nav>
+
+
+
+<section class="home main-content">
+
+    <div class="header-breadcrumbs animate-fade-in">
+        Welcome to Diligence
+    </div>
+
+    <div class="page-header animate-fade-in">
+        <div>
+            <h1 class="page-title">Dashboard</h1>
+            <span class="page-subtitle">Diligence - Your Personal Organization Platform</span>
+        </div>
+    </div>
+
+    <div class="dashboard-welcome animate-fade-in">
+        <div>
+            <h2 class="welcome-title">
+                Good morning, <span id="dashboard-user-name">Full Name</span>!
+            </h2>
+
+            <p class="welcome-description" id="dashboard-current-date">
+                Thursday, January 1, 2026
+                <span id="dashboard-current-time">10:00:00 AM</span>
+            </p>
+        </div>
+
+        <div class="welcome-icon">
+            <i class="bx bx-calendar-check"></i>
+        </div>
+    </div>
+
+    <div class="dashboard-statistics">
+
+        <div class="card dashboard-statistic-card animate-fade-in">
+            <div class="dashboard-statistic-icon">
+                <i class="bx bxs-check-circle"></i>
+            </div>
+
+            <div class="dashboard-statistic-information">
+                <span class="dashboard-statistic-value" id="tasks-today-count">0</span>
+                <span class="dashboard-statistic-label">Events Scheduled</span>
+            </div>
+        </div>
+
+        <div class="card dashboard-statistic-card animate-fade-in">
+            <div class="dashboard-statistic-icon">
+                <i class="bx bx-calendar-event"></i>
+            </div>
+
+            <div class="dashboard-statistic-information">
+                <span class="dashboard-statistic-value" id="upcoming-deadlines-count">0</span>
+                <span class="dashboard-statistic-label">Upcoming Deadlines</span>
+            </div>
+        </div>
+
+        <div class="card dashboard-statistic-card animate-fade-in">
+            <div class="dashboard-statistic-icon">
+                <i class="bx bx-folder-open"></i>
+            </div>
+
+            <div class="dashboard-statistic-information">
+                <span class="dashboard-statistic-value" id="active-projects-count">0</span>
+                <span class="dashboard-statistic-label">Active Projects</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="dashboard-main-grid">
+
+        <div class="card dashboard-card today-schedule-card animate-fade-in">
+
+            <div class="card-header">
+                <h2 class="card-title">Today's Schedule</h2>
+                <span class="card-action-text">Your activities for today</span>
+            </div>
+
+            <div class="schedule-list" id="today-schedule-list"></div>
+
+        </div>
+
+        <div class="card dashboard-card upcoming-deadlines-card animate-fade-in">
+
+            <div class="card-header">
+                <h2 class="card-title">Upcoming Deadlines</h2>
+                <span class="card-action-text">Don't miss what's next</span>
+            </div>
+
+            <div class="deadline-list" id="dashboard-deadline-list"></div>
+
+        </div>
+
+    </div>
+
+    <div class="dashboard-secondary-grid">
+
+        <div class="card dashboard-card active-projects-card animate-fade-in">
+
+            <div class="card-header">
+                <h2 class="card-title">Active Projects</h2>
+                <span class="card-action-text">Your current projects</span>
+            </div>
+
+            <div class="project-list" id="dashboard-project-list"></div>
+
+        </div>
+
+        <div class="card dashboard-card todays-tasks-card animate-fade-in">
+
+            <div class="card-header">
+                <h2 class="card-title">Today's Tasks</h2>
+                <span class="card-action-text" id="tasks-completed-summary">
+                    0 of 0 completed
+                </span>
+            </div>
+
+            <div class="dashboard-task-list" id="dashboard-task-list"></div>
+
+        </div>
+
+    </div>
+
+    <div class="card dashboard-card dashboard-goals-card animate-fade-in">
+
+        <div class="card-header">
+            <div>
+                <h2 class="card-title">Goals</h2>
+                <span class="card-action-text">Track your current objectives</span>
+            </div>
+        </div>
+
+        <div class="project-list" id="dashboard-goal-list"></div>
+
+    </div>
+
+    <div class="card dashboard-card sticky-notes-card animate-fade-in">
+
+        <div class="card-header sticky-notes-header">
+            <div>
+                <h2 class="card-title">Sticky Notes</h2>
+                <span class="card-action-text">Quick reminders for yourself</span>
+            </div>
+
+            <button class="dashboard-add-button" id="add-sticky-note-button" type="button">
+                <i class="bx bx-plus"></i>
+                Add New
+            </button>
+        </div>
+
+        <div class="sticky-notes-list" id="sticky-notes-list">
+
+            <div class="sticky-note">
+                <div class="sticky-note-header">
+                    <span class="sticky-note-icon">
+                        <i class="bx bxs-pin"></i>
+                    </span>
+
+                    <button class="sticky-note-menu-button" type="button">
+                        <i class="bx bx-dots-horizontal-rounded"></i>
+                    </button>
+                </div>
+
+                <p class="sticky-note-content">
+                    HESOYAM
+                </p>
+            </div>
+
+            <div class="sticky-note">
+                <div class="sticky-note-header">
+                    <span class="sticky-note-icon">
+                        <i class="bx bxs-pin"></i>
+                    </span>
+
+                    <button class="sticky-note-menu-button" type="button">
+                        <i class="bx bx-dots-horizontal-rounded"></i>
+                    </button>
+                </div>
+
+                <p class="sticky-note-content">
+                    What was the spider doing on the computer? He was making a WEB-site!
+                </p>
+            </div>
+
+            <div class="sticky-note">
+                <div class="sticky-note-header">
+                    <span class="sticky-note-icon">
+                        <i class="bx bxs-pin"></i>
+                    </span>
+
+                    <button class="sticky-note-menu-button" type="button">
+                        <i class="bx bx-dots-horizontal-rounded"></i>
+                    </button>
+                </div>
+
+                <p class="sticky-note-content">
+                    Fall seven times, get up eight
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>
+
+
