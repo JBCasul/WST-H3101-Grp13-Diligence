@@ -1,6 +1,6 @@
 # WST H3101 - MS1 Submission
 
-##DILIGENCE
+## DILIGENCE
 
 ### Purpose
 
