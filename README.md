@@ -1,18 +1,18 @@
 # WST H3101 - MS1 Submission
 
+##DILIGENCE
 
-## Purpose
+### Purpose
 
 This is the **MS1 submission for Group 13** in **WST H3101**.
 
 
-## Contributors
+### Contributors
 
 - Josh Casul
-- Trishia Cagro 
 
 
-## How to run the Website
+### How to run the Website
 
 1. Download the ZIP file and extract the folder.
 2. Open the extracted folder in your IDE.
