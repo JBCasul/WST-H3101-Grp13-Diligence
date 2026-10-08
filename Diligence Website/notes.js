@@ -265,6 +265,12 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        const confirmed = confirm("Are you sure you want to delete this note?");
+
+        if (!confirmed) {
+            return;
+        }
+
         const notes = getNotes().filter(
             (n) => n.id.toString() !== editingId.toString()
         );
@@ -314,4 +320,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderNotes();
 });
-
