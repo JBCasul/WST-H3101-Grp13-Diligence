@@ -17,6 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const goalDeadlineInput = document.getElementById("goal-deadline");
     const goalProgressInput = document.getElementById("goal-progress");
 
+    if (goalDeadlineInput) {
+    goalDeadlineInput.max = "2999-12-31";
+}
+
     const totalGoalsCount = document.getElementById("total-goals-count");
     const activeGoalsCount = document.getElementById("active-goals-count");
     const completedGoalsCount = document.getElementById("completed-goals-count");
