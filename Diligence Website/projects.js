@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const projectDescriptionInput = document.getElementById("project-description");
     const projectStatusSelect = document.getElementById("project-status");
     const projectDeadlineInput = document.getElementById("project-deadline");
+    if (projectDeadlineInput) {
+    projectDeadlineInput.max = "2999-12-31";
+}
 
     const projectTaskInput = document.getElementById("project-task-input");
     const addTaskItemBtn = document.getElementById("add-task-item-btn");
