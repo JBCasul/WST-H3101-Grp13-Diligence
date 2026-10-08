@@ -16,6 +16,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const todayTasksList = document.getElementById('today-tasks-list');
     const tasksCompletedSummary = document.getElementById('tasks-completed-summary');
 
+    const scheduleDateInput = document.getElementById('task-date');
+    const deadlineDateInput = document.getElementById('task-deadline-date');
+
+    if (scheduleDateInput) {
+        scheduleDateInput.max = '2999-12-31';
+    }
+
+    if (deadlineDateInput) {
+        deadlineDateInput.max = '2999-12-31';
+    }
+
     function loadTasks() {
         const taskIds = localStorage.getItem('diligence_task_ids') || '';
 
@@ -74,6 +85,48 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem(`diligence_task_${taskId}_repeat`);
         localStorage.removeItem(`diligence_task_${taskId}_date`);
         localStorage.removeItem(`diligence_task_${taskId}_time`);
+    }
+
+    function validateDate(dateValue) {
+        if (!dateValue) {
+            return true;
+        }
+
+        const dateParts = dateValue.split('-');
+
+        if (dateParts.length !== 3) {
+            return false;
+        }
+
+        const year = dateParts[0];
+        const month = dateParts[1];
+        const day = dateParts[2];
+
+        if (!/^\d{4}$/.test(year)) {
+            return false;
+        }
+
+        const yearNumber = Number(year);
+        const monthNumber = Number(month);
+        const dayNumber = Number(day);
+
+        if (yearNumber < 1 || yearNumber > 2999) {
+            return false;
+        }
+
+        if (monthNumber < 1 || monthNumber > 12) {
+            return false;
+        }
+
+        if (dayNumber < 1 || dayNumber > 31) {
+            return false;
+        }
+
+        const date = new Date(yearNumber, monthNumber - 1, dayNumber);
+
+        return date.getFullYear() === yearNumber &&
+            date.getMonth() === monthNumber - 1 &&
+            date.getDate() === dayNumber;
     }
 
     function openModal(isEdit = false, task = null) {
@@ -220,6 +273,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const deleteBtn = card.querySelector('.delete-btn');
 
         deleteBtn.addEventListener('click', () => {
+            const confirmed = window.confirm(
+                `Are you sure you want to delete "${task.name}"?`
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
             tasks = tasks.filter(t => t.id !== task.id);
             deleteTaskStorage(task.id);
             saveTasks();
@@ -262,7 +323,11 @@ document.addEventListener('DOMContentLoaded', () => {
             id: taskId || Date.now().toString(),
             section: section,
             name: name,
-            completed: false
+            completed: false,
+            category: '',
+            repeat: 'none',
+            date: '',
+            time: ''
         };
 
         if (section === 'schedule') {
@@ -270,8 +335,18 @@ document.addEventListener('DOMContentLoaded', () => {
             taskData.repeat = document.getElementById('task-repeat').value;
             taskData.date = document.getElementById('task-date').value;
             taskData.time = document.getElementById('task-time').value;
+
+            if (!validateDate(taskData.date)) {
+                alert('Please enter a valid date with a 4-digit year from 0001 to 2999.');
+                return;
+            }
         } else if (section === 'deadline') {
             taskData.date = document.getElementById('task-deadline-date').value;
+
+            if (!validateDate(taskData.date)) {
+                alert('Please enter a valid date with a 4-digit year from 0001 to 2999.');
+                return;
+            }
         }
 
         if (taskId) {
@@ -292,4 +367,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderTasks();
 });
-
