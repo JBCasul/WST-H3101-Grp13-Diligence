@@ -41,8 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function loadTasks() {
-        const taskIdsText =
-            localStorage.getItem("diligence_task_ids") || "";
+        const taskIdsText = localStorage.getItem("diligence_task_ids") || "";
 
         if (!taskIdsText) {
             return [];
@@ -52,10 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const loadedTasks = [];
 
         taskIds.forEach(taskId => {
-            const taskName =
-                localStorage.getItem(
-                    `diligence_task_${taskId}_name`
-                );
+            const taskName = localStorage.getItem(`diligence_task_${taskId}_name`);
 
             if (taskName === null) {
                 return;
@@ -64,30 +60,12 @@ document.addEventListener("DOMContentLoaded", () => {
             loadedTasks.push({
                 id: taskId,
                 name: taskName,
-                section:
-                    localStorage.getItem(
-                        `diligence_task_${taskId}_section`
-                    ) || "",
-                completed:
-                    localStorage.getItem(
-                        `diligence_task_${taskId}_completed`
-                    ) === "true",
-                category:
-                    localStorage.getItem(
-                        `diligence_task_${taskId}_category`
-                    ) || "",
-                repeat:
-                    localStorage.getItem(
-                        `diligence_task_${taskId}_repeat`
-                    ) || "none",
-                date:
-                    localStorage.getItem(
-                        `diligence_task_${taskId}_date`
-                    ) || "",
-                time:
-                    localStorage.getItem(
-                        `diligence_task_${taskId}_time`
-                    ) || ""
+                section: localStorage.getItem(`diligence_task_${taskId}_section`) || "",
+                completed: localStorage.getItem(`diligence_task_${taskId}_completed`) === "true",
+                category: localStorage.getItem(`diligence_task_${taskId}_category`) || "",
+                repeat: localStorage.getItem(`diligence_task_${taskId}_repeat`) || "none",
+                date: localStorage.getItem(`diligence_task_${taskId}_date`) || "",
+                time: localStorage.getItem(`diligence_task_${taskId}_time`) || ""
             });
         });
 
@@ -95,42 +73,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function loadProjects() {
-        const projectIdsText =
-            localStorage.getItem("diligence_project_ids") || "";
+        const projectIdsText = localStorage.getItem("diligence_project_ids") || "";
 
         if (!projectIdsText) {
             return [];
         }
 
-        const projectIds =
-            projectIdsText.split(",").filter(id => id);
-
+        const projectIds = projectIdsText.split(",").filter(id => id);
         const loadedProjects = [];
 
         projectIds.forEach(projectId => {
-            const title =
-                localStorage.getItem(
-                    `diligence_project_${projectId}_title`
-                );
+            const title = localStorage.getItem(`diligence_project_${projectId}_title`);
 
             if (title === null) {
                 return;
             }
 
-            const taskCount =
-                Number(
-                    localStorage.getItem(
-                        `diligence_project_${projectId}_task_count`
-                    )
-                ) || 0;
-
+            const taskCount = Number(localStorage.getItem(`diligence_project_${projectId}_task_count`)) || 0;
             const projectTasks = [];
 
             for (let index = 0; index < taskCount; index++) {
-                const taskName =
-                    localStorage.getItem(
-                        `diligence_project_${projectId}_task_${index}_name`
-                    );
+                const taskName = localStorage.getItem(`diligence_project_${projectId}_task_${index}_name`);
 
                 if (taskName === null) {
                     continue;
@@ -138,24 +101,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 projectTasks.push({
                     name: taskName,
-                    completed:
-                        localStorage.getItem(
-                            `diligence_project_${projectId}_task_${index}_completed`
-                        ) === "true"
+                    completed: localStorage.getItem(`diligence_project_${projectId}_task_${index}_completed`) === "true"
                 });
             }
 
             loadedProjects.push({
                 id: projectId,
                 title: title,
-                status:
-                    localStorage.getItem(
-                        `diligence_project_${projectId}_status`
-                    ) || "Planned",
-                deadline:
-                    localStorage.getItem(
-                        `diligence_project_${projectId}_deadline`
-                    ) || "",
+                status: localStorage.getItem(`diligence_project_${projectId}_status`) || "Planned",
+                deadline: localStorage.getItem(`diligence_project_${projectId}_deadline`) || "",
                 tasks: projectTasks
             });
         });
@@ -164,96 +118,283 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function loadGoals() {
-        const goalList =
-            document.getElementById(
-                "dashboard-goal-list"
-            );
+        const goalList = document.getElementById("dashboard-goal-list");
 
         if (!goalList) {
             return;
         }
 
-        const goalIdsText =
-            localStorage.getItem(
-                "diligence_goal_ids"
-            ) || "";
-
-        const goalIds =
-            goalIdsText
-                .split(",")
-                .filter(id => id);
+        const goalIdsText = localStorage.getItem("diligence_goal_ids") || "";
+        const goalIds = goalIdsText.split(",").filter(id => id);
 
         goalList.innerHTML = "";
 
         if (goalIds.length === 0) {
-            showEmptyMessage(
-                goalList,
-                "No goals yet."
-            );
+            showEmptyMessage(goalList, "No goals yet.");
             return;
         }
 
-        goalIds
-            .slice(0, 3)
-            .forEach(goalId => {
-                const title =
-                    localStorage.getItem(
-                        `diligence_goal_${goalId}_title`
-                    );
+        goalIds.slice(0, 3).forEach(goalId => {
+            const title = localStorage.getItem(`diligence_goal_${goalId}_title`);
 
-                if (title === null) {
-                    return;
-                }
+            if (title === null) {
+                return;
+            }
 
-                const progress =
-                    Math.min(
-                        100,
-                        Math.max(
-                            0,
-                            Number(
-                                localStorage.getItem(
-                                    `diligence_goal_${goalId}_progress`
-                                )
-                            ) || 0
-                        )
-                    );
+            const progress = Math.min(
+                100,
+                Math.max(
+                    0,
+                    Number(localStorage.getItem(`diligence_goal_${goalId}_progress`)) || 0
+                )
+            );
 
-                const goalItem =
-                    document.createElement(
-                        "div"
-                    );
+            const goalItem = document.createElement("div");
+            goalItem.className = "project-item";
 
-                goalItem.className =
-                    "project-item";
-
-                goalItem.innerHTML = `
-                    <div class="project-information">
-                        <div class="project-name">
-                            <i class="bx bxs-flag"></i>
-                            <h3>${title}</h3>
-                        </div>
-
-                        <span>${progress}%</span>
+            goalItem.innerHTML = `
+                <div class="project-information">
+                    <div class="project-name">
+                        <i class="bx bxs-flag"></i>
+                        <h3>${title}</h3>
                     </div>
 
-                    <div class="project-progress">
-                        <div
-                            class="project-progress-bar"
-                            style="width: ${progress}%"
-                        ></div>
-                    </div>
-                `;
+                    <span>${progress}%</span>
+                </div>
 
-                goalList.appendChild(
-                    goalItem
-                );
-            });
+                <div class="project-progress">
+                    <div class="project-progress-bar" style="width: ${progress}%"></div>
+                </div>
+            `;
+
+            goalList.appendChild(goalItem);
+        });
     }
 
+    let activeNoteEditingId = null;
+
+    function createStickyNoteModal() {
+        if (document.getElementById("sticky-note-modal")) {
+            return;
+        }
+
+        const modalOverlay = document.createElement("div");
+        modalOverlay.id = "sticky-note-modal";
+        modalOverlay.style.cssText = `
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(3px);
+        `;
+
+        modalOverlay.innerHTML = `
+            <div class="card" style="width: 100%; max-width: 450px; margin: 20px;">
+                <div class="card-header" style="margin-bottom: 16px;">
+                    <h2 class="card-title" id="sticky-note-modal-title">Add Sticky Note</h2>
+                    <button id="sticky-note-modal-close" type="button" style="background: none; color: var(--text-gray); font-size: 20px; cursor: pointer;">
+                        <i class="bx bx-x"></i>
+                    </button>
+                </div>
+                <textarea id="sticky-note-modal-input" placeholder="Type your note content here..." style="width: 100%; height: 110px; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-dark); font-size: 13px; resize: none; outline: none; margin-bottom: 20px;"></textarea>
+                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                    <button id="sticky-note-modal-cancel" type="button" style="padding: 8px 16px; border-radius: 20px; background-color: var(--primary-light); color: var(--primary); font-size: 12px; font-weight: 600; cursor: pointer;">Cancel</button>
+                    <button id="sticky-note-modal-save" type="button" class="dashboard-add-button">Save Note</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modalOverlay);
+
+        const closeBtn = document.getElementById("sticky-note-modal-close");
+        const cancelBtn = document.getElementById("sticky-note-modal-cancel");
+        const saveBtn = document.getElementById("sticky-note-modal-save");
+
+        closeBtn.addEventListener("click", hideStickyNoteModal);
+        cancelBtn.addEventListener("click", hideStickyNoteModal);
+
+        modalOverlay.addEventListener("click", (e) => {
+            if (e.target === modalOverlay) {
+                hideStickyNoteModal();
+            }
+        });
+
+        saveBtn.addEventListener("click", () => {
+            const textInput = document.getElementById("sticky-note-modal-input");
+            const content = textInput.value.trim();
+
+            if (!content) {
+                return;
+            }
+
+            if (activeNoteEditingId) {
+                updateStickyNote(activeNoteEditingId, content);
+            } else {
+                saveNewStickyNote(content);
+            }
+
+            hideStickyNoteModal();
+        });
+    }
+
+    function showStickyNoteModal(noteId = null, currentContent = "") {
+        createStickyNoteModal();
+
+        const modal = document.getElementById("sticky-note-modal");
+        const modalTitle = document.getElementById("sticky-note-modal-title");
+        const textInput = document.getElementById("sticky-note-modal-input");
+
+        activeNoteEditingId = noteId;
+
+        if (noteId) {
+            modalTitle.textContent = "Edit Sticky Note";
+            textInput.value = currentContent;
+        } else {
+            modalTitle.textContent = "Add Sticky Note";
+            textInput.value = "";
+        }
+
+        modal.style.display = "flex";
+        textInput.focus();
+    }
+
+    function hideStickyNoteModal() {
+        const modal = document.getElementById("sticky-note-modal");
+        if (modal) {
+            modal.style.display = "none";
+        }
+        activeNoteEditingId = null;
+    }
+
+    function loadStickyNotes() {
+        const notesContainer = document.getElementById("sticky-notes-list");
+        if (!notesContainer) {
+            return;
+        }
+
+        const savedNotes = JSON.parse(localStorage.getItem("diligence_sticky_notes") || "null");
+
+        const defaultNotes = [
+            { id: "1", content: "HESOYAM" },
+            { id: "2", content: "What was the spider doing on the computer? He was making a WEB-site!" },
+            { id: "3", content: "Fall seven times, get up eight" }
+        ];
+
+        const notes = savedNotes !== null ? savedNotes : defaultNotes;
+        if (savedNotes === null) {
+            localStorage.setItem("diligence_sticky_notes", JSON.stringify(notes));
+        }
+
+        notesContainer.innerHTML = "";
+
+        if (notes.length === 0) {
+            showEmptyMessage(notesContainer, "No sticky notes yet.");
+            return;
+        }
+
+        notes.forEach(note => {
+            const noteElement = document.createElement("div");
+            noteElement.className = "sticky-note";
+            noteElement.dataset.id = note.id;
+
+            noteElement.innerHTML = `
+                <div class="sticky-note-header">
+                    <span class="sticky-note-icon">
+                        <i class="bx bxs-pin"></i>
+                    </span>
+                    <div style="position: relative;">
+                        <button class="sticky-note-menu-button" type="button">
+                            <i class="bx bx-dots-horizontal-rounded"></i>
+                        </button>
+                        <div class="sticky-note-dropdown" style="display: none; position: absolute; right: 0; top: 35px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); z-index: 10; min-width: 110px; padding: 6px 0;">
+                            <button class="sticky-action-edit" type="button" style="width: 100%; text-align: left; padding: 8px 14px; background: none; color: var(--text-dark); font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                                <i class="bx bx-edit-alt"></i> Edit
+                            </button>
+                            <button class="sticky-action-delete" type="button" style="width: 100%; text-align: left; padding: 8px 14px; background: none; color: var(--danger); font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                                <i class="bx bx-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <p class="sticky-note-content">${note.content}</p>
+            `;
+
+            const menuBtn = noteElement.querySelector(".sticky-note-menu-button");
+            const dropdown = noteElement.querySelector(".sticky-note-dropdown");
+            const editBtn = noteElement.querySelector(".sticky-action-edit");
+            const deleteBtn = noteElement.querySelector(".sticky-action-delete");
+
+            menuBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                document.querySelectorAll(".sticky-note-dropdown").forEach(d => {
+                    if (d !== dropdown) {
+                        d.style.display = "none";
+                    }
+                });
+                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+            });
+
+            editBtn.addEventListener("click", () => {
+                dropdown.style.display = "none";
+                showStickyNoteModal(note.id, note.content);
+            });
+
+            deleteBtn.addEventListener("click", () => {
+                dropdown.style.display = "none";
+                deleteStickyNote(note.id);
+            });
+
+            notesContainer.appendChild(noteElement);
+        });
+    }
+
+    function saveNewStickyNote(content) {
+        const notes = JSON.parse(localStorage.getItem("diligence_sticky_notes") || "[]");
+        const newNote = {
+            id: Date.now().toString(),
+            content: content
+        };
+
+        notes.push(newNote);
+        localStorage.setItem("diligence_sticky_notes", JSON.stringify(notes));
+        loadStickyNotes();
+    }
+
+    function updateStickyNote(id, newContent) {
+        let notes = JSON.parse(localStorage.getItem("diligence_sticky_notes") || "[]");
+        notes = notes.map(note => note.id === id ? { ...note, content: newContent } : note);
+        localStorage.setItem("diligence_sticky_notes", JSON.stringify(notes));
+        loadStickyNotes();
+    }
+
+    function deleteStickyNote(id) {
+        let notes = JSON.parse(localStorage.getItem("diligence_sticky_notes") || "[]");
+        notes = notes.filter(note => note.id !== id);
+        localStorage.setItem("diligence_sticky_notes", JSON.stringify(notes));
+        loadStickyNotes();
+    }
+
+    const addStickyBtn = document.getElementById("add-sticky-note-button");
+    if (addStickyBtn) {
+        addStickyBtn.addEventListener("click", () => {
+            showStickyNoteModal();
+        });
+    }
+
+    document.addEventListener("click", () => {
+        document.querySelectorAll(".sticky-note-dropdown").forEach(d => {
+            d.style.display = "none";
+        });
+    });
+
     function getTaskSection(task) {
-        return String(task.section || "")
-            .trim()
-            .toLowerCase();
+        return String(task.section || "").trim().toLowerCase();
     }
 
     function isSchedule(task) {
@@ -275,8 +416,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const timeValue = String(time).trim();
 
-        const twentyFourHourMatch =
-            timeValue.match(/^(\d{1,2}):(\d{2})$/);
+        const twentyFourHourMatch = timeValue.match(/^(\d{1,2}):(\d{2})$/);
 
         if (twentyFourHourMatch) {
             return {
@@ -285,16 +425,12 @@ document.addEventListener("DOMContentLoaded", () => {
             };
         }
 
-        const twelveHourMatch =
-            timeValue.match(
-                /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i
-            );
+        const twelveHourMatch = timeValue.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
 
         if (twelveHourMatch) {
             let hour = Number(twelveHourMatch[1]);
             const minute = Number(twelveHourMatch[2]);
-            const period =
-                twelveHourMatch[3].toUpperCase();
+            const period = twelveHourMatch[3].toUpperCase();
 
             if (period === "PM" && hour !== 12) {
                 hour += 12;
@@ -325,12 +461,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         let hour = parsedTime.hour;
-
-        const minute =
-            String(parsedTime.minute).padStart(2, "0");
-
-        const period =
-            hour >= 12 ? "PM" : "AM";
+        const minute = String(parsedTime.minute).padStart(2, "0");
+        const period = hour >= 12 ? "PM" : "AM";
 
         hour = hour % 12;
 
@@ -339,19 +471,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         return {
-            hour:
-                String(hour).padStart(2, "0"),
+            hour: String(hour).padStart(2, "0"),
             minute: minute,
             period: period
         };
     }
 
     function getTaskDateTime(task) {
-        const date =
-            normalizeDate(task.date);
-
-        const time =
-            parseTaskTime(task.time);
+        const date = normalizeDate(task.date);
+        const time = parseTaskTime(task.time);
 
         if (!date || !time) {
             return null;
@@ -363,50 +491,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function formatCountdown(task) {
-        const scheduleTime =
-            getTaskDateTime(task);
+        const scheduleTime = getTaskDateTime(task);
 
         if (!scheduleTime) {
             return "Starts soon";
         }
 
-        const currentTime =
-            new Date();
-
-        const difference =
-            scheduleTime.getTime() -
-            currentTime.getTime();
+        const currentTime = new Date();
+        const difference = scheduleTime.getTime() - currentTime.getTime();
 
         if (difference <= 0) {
             return "Started";
         }
 
-        const totalMinutes =
-            Math.ceil(
-                difference / 60000
-            );
-
-        const hours =
-            Math.floor(
-                totalMinutes / 60
-            );
-
-        const minutes =
-            totalMinutes % 60;
+        const totalMinutes = Math.ceil(difference / 60000);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
 
         if (hours >= 1) {
             if (minutes === 0) {
-                return hours === 1
-                    ? "In 1 hr"
-                    : `In ${hours} hrs`;
+                return hours === 1 ? "In 1 hr" : `In ${hours} hrs`;
             }
 
             return `In less than ${hours + 1} hrs`;
         }
 
-        return minutes === 1
-            ? "In 1 min"
-            : `In ${minutes} mins`;
+        return minutes === 1 ? "In 1 min" : `In ${minutes} mins`;
     }
 
     function showEmptyMessage(container, message) {
@@ -418,23 +528,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function getCompletedScheduleKeys() {
-        const savedKeys =
-            localStorage.getItem(
-                "diligence_dashboard_completed_schedules"
-            ) || "";
+        const savedKeys = localStorage.getItem("diligence_dashboard_completed_schedules") || "";
 
         if (!savedKeys) {
             return [];
         }
 
-        return savedKeys
-            .split(",")
-            .filter(key => key);
+        return savedKeys.split(",").filter(key => key);
     }
 
     function saveCompletedScheduleKey(scheduleKey) {
-        const completedSchedules =
-            getCompletedScheduleKeys();
+        const completedSchedules = getCompletedScheduleKeys();
 
         if (!completedSchedules.includes(scheduleKey)) {
             completedSchedules.push(scheduleKey);
@@ -447,160 +551,95 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function loadDashboardDate() {
-        const dateElement =
-            document.getElementById(
-                "dashboard-current-date"
-            );
-
-        const timeElement =
-            document.getElementById(
-                "dashboard-current-time"
-            );
+        const dateElement = document.getElementById("dashboard-current-date");
+        const timeElement = document.getElementById("dashboard-current-time");
 
         if (!dateElement || !timeElement) {
             return;
         }
 
         function updateDateTime() {
-            const currentDate =
-                new Date();
+            const currentDate = new Date();
 
-            const dateText =
-                currentDate.toLocaleDateString(
-                    "en-US",
-                    {
-                        weekday: "long",
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric"
-                    }
-                );
+            const dateText = currentDate.toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+                year: "numeric"
+            });
 
-            const timeText =
-                currentDate.toLocaleTimeString(
-                    "en-US",
-                    {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit"
-                    }
-                );
+            const timeText = currentDate.toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            });
 
             if (dateElement.childNodes[0]) {
-                dateElement.childNodes[0].textContent =
-                    `${dateText} `;
+                dateElement.childNodes[0].textContent = `${dateText} `;
             }
 
-            timeElement.textContent =
-                timeText;
+            timeElement.textContent = timeText;
         }
 
         updateDateTime();
 
         if (!dateElement.dataset.timerStarted) {
-            setInterval(
-                updateDateTime,
-                1000
-            );
-
-            dateElement.dataset.timerStarted =
-                "true";
+            setInterval(updateDateTime, 1000);
+            dateElement.dataset.timerStarted = "true";
         }
     }
 
-function loadTodaySchedule(tasks) {
-    const scheduleList =
-        document.querySelector(
-            ".today-schedule-card .schedule-list"
-        );
+    function loadTodaySchedule(tasks) {
+        const scheduleList = document.querySelector(".today-schedule-card .schedule-list");
 
-    if (!scheduleList) {
-        return;
-    }
+        if (!scheduleList) {
+            return;
+        }
 
-    const taskIdsText =
-        localStorage.getItem(
-            "diligence_task_ids"
-        ) || "";
+        const taskIdsText = localStorage.getItem("diligence_task_ids") || "";
+        const currentTasks = [];
 
-    const currentTasks = [];
+        if (taskIdsText) {
+            taskIdsText
+                .split(",")
+                .filter(id => id)
+                .forEach(taskId => {
+                    const taskName = localStorage.getItem(`diligence_task_${taskId}_name`);
 
-    if (taskIdsText) {
-        taskIdsText
-            .split(",")
-            .filter(id => id)
-            .forEach(taskId => {
-                const taskName =
-                    localStorage.getItem(
-                        `diligence_task_${taskId}_name`
-                    );
+                    if (taskName === null) {
+                        return;
+                    }
 
-                if (taskName === null) {
-                    return;
-                }
-
-                currentTasks.push({
-                    id: taskId,
-                    name: taskName,
-                    section:
-                        localStorage.getItem(
-                            `diligence_task_${taskId}_section`
-                        ) || "",
-                    completed:
-                        localStorage.getItem(
-                            `diligence_task_${taskId}_completed`
-                        ) === "true",
-                    category:
-                        localStorage.getItem(
-                            `diligence_task_${taskId}_category`
-                        ) || "",
-                    repeat:
-                        localStorage.getItem(
-                            `diligence_task_${taskId}_repeat`
-                        ) || "none",
-                    date:
-                        localStorage.getItem(
-                            `diligence_task_${taskId}_date`
-                        ) || "",
-                    time:
-                        localStorage.getItem(
-                            `diligence_task_${taskId}_time`
-                        ) || ""
+                    currentTasks.push({
+                        id: taskId,
+                        name: taskName,
+                        section: localStorage.getItem(`diligence_task_${taskId}_section`) || "",
+                        completed: localStorage.getItem(`diligence_task_${taskId}_completed`) === "true",
+                        category: localStorage.getItem(`diligence_task_${taskId}_category`) || "",
+                        repeat: localStorage.getItem(`diligence_task_${taskId}_repeat`) || "none",
+                        date: localStorage.getItem(`diligence_task_${taskId}_date`) || "",
+                        time: localStorage.getItem(`diligence_task_${taskId}_time`) || ""
+                    });
                 });
-            });
-    }
+        }
 
-    const today =
-        getTodayDate();
+        const today = getTodayDate();
+        const completedSchedules = getCompletedScheduleKeys();
 
-    const completedSchedules =
-        getCompletedScheduleKeys();
-
-    const todaySchedule =
-        currentTasks
+        const todaySchedule = currentTasks
             .filter(task => {
-                const scheduleKey =
-                    `${task.id}-${today}`;
+                const scheduleKey = `${task.id}-${today}`;
 
                 return (
                     isSchedule(task) &&
                     normalizeDate(task.date) === today &&
                     !task.completed &&
-                    !completedSchedules.includes(
-                        scheduleKey
-                    )
+                    !completedSchedules.includes(scheduleKey)
                 );
             })
             .sort((firstTask, secondTask) => {
-                const firstTime =
-                    parseTaskTime(
-                        firstTask.time
-                    );
-
-                const secondTime =
-                    parseTaskTime(
-                        secondTask.time
-                    );
+                const firstTime = parseTaskTime(firstTask.time);
+                const secondTime = parseTaskTime(secondTask.time);
 
                 if (!firstTime && !secondTime) {
                     return 0;
@@ -615,175 +654,113 @@ function loadTodaySchedule(tasks) {
                 }
 
                 return (
-                    firstTime.hour * 60 +
-                    firstTime.minute
+                    firstTime.hour * 60 + firstTime.minute
                 ) - (
-                    secondTime.hour * 60 +
-                    secondTime.minute
+                    secondTime.hour * 60 + secondTime.minute
                 );
             })
             .slice(0, 3);
 
-    scheduleList.innerHTML = "";
+        scheduleList.innerHTML = "";
 
-    if (todaySchedule.length === 0) {
-        showEmptyMessage(
-            scheduleList,
-            "No schedule for today."
-        );
-        return;
-    }
+        if (todaySchedule.length === 0) {
+            showEmptyMessage(scheduleList, "No schedule for today.");
+            return;
+        }
 
-    todaySchedule.forEach(task => {
-        const time =
-            formatTime(task.time);
+        todaySchedule.forEach(task => {
+            const time = formatTime(task.time);
+            const scheduleItem = document.createElement("div");
 
-        const scheduleItem =
-            document.createElement("div");
+            scheduleItem.className = "schedule-item";
+            scheduleItem.style.display = "grid";
+            scheduleItem.style.gridTemplateColumns = "62px 14px minmax(0, 1fr) auto 20px";
+            scheduleItem.style.alignItems = "center";
 
-        scheduleItem.className =
-            "schedule-item";
+            scheduleItem.innerHTML = `
+                <div class="schedule-time">
+                    <span>${time.hour}:${time.minute}</span>
+                    <small>${time.period}</small>
+                </div>
 
-        scheduleItem.style.display =
-            "grid";
+                <div class="schedule-indicator"></div>
 
-        scheduleItem.style.gridTemplateColumns =
-            "62px 14px minmax(0, 1fr) auto 20px";
+                <div class="schedule-information">
+                    <h3>${task.name}</h3>
+                    <span>${task.category || "Schedule"}</span>
+                </div>
 
-        scheduleItem.style.alignItems =
-            "center";
+                <div class="schedule-countdown">
+                    ${formatCountdown(task)}
+                </div>
 
-        scheduleItem.innerHTML = `
-            <div class="schedule-time">
-                <span>${time.hour}:${time.minute}</span>
-                <small>${time.period}</small>
-            </div>
+                <label class="schedule-checkbox">
+                    <input type="checkbox">
+                    <span class="schedule-checkmark"></span>
+                </label>
+            `;
 
-            <div class="schedule-indicator"></div>
+            const checkbox = scheduleItem.querySelector(".schedule-checkbox input");
 
-            <div class="schedule-information">
-                <h3>${task.name}</h3>
-                <span>${task.category || "Schedule"}</span>
-            </div>
-
-            <div class="schedule-countdown">
-                ${formatCountdown(task)}
-            </div>
-
-            <label class="schedule-checkbox">
-                <input type="checkbox">
-                <span class="schedule-checkmark"></span>
-            </label>
-        `;
-
-        const checkbox =
-            scheduleItem.querySelector(
-                ".schedule-checkbox input"
-            );
-
-        checkbox.addEventListener(
-            "change",
-            () => {
+            checkbox.addEventListener("change", () => {
                 if (!checkbox.checked) {
                     return;
                 }
 
-                const finished =
-                    window.confirm(
-                        "Is this schedule finished for today?"
-                    );
+                const finished = window.confirm("Is this schedule finished for today?");
 
                 if (finished) {
-                    const scheduleKey =
-                        `${task.id}-${today}`;
-
-                    saveCompletedScheduleKey(
-                        scheduleKey
-                    );
-
+                    const scheduleKey = `${task.id}-${today}`;
+                    saveCompletedScheduleKey(scheduleKey);
                     loadDashboard();
                 } else {
                     checkbox.checked = false;
                 }
-            }
-        );
-
-        scheduleList.appendChild(
-            scheduleItem
-        );
-    });
-}
-
-function loadUpcomingDeadlines(tasks) {
-    const deadlineList =
-        document.querySelector(
-            ".upcoming-deadlines-card .deadline-list"
-        );
-
-    if (!deadlineList) {
-        return;
-    }
-
-    const taskIdsText =
-        localStorage.getItem(
-            "diligence_task_ids"
-        ) || "";
-
-    const currentTasks = [];
-
-    if (taskIdsText) {
-        taskIdsText
-            .split(",")
-            .filter(id => id)
-            .forEach(taskId => {
-                const taskName =
-                    localStorage.getItem(
-                        `diligence_task_${taskId}_name`
-                    );
-
-                if (taskName === null) {
-                    return;
-                }
-
-                currentTasks.push({
-                    id: taskId,
-                    name: taskName,
-                    section:
-                        localStorage.getItem(
-                            `diligence_task_${taskId}_section`
-                        ) || "",
-                    completed:
-                        localStorage.getItem(
-                            `diligence_task_${taskId}_completed`
-                        ) === "true",
-                    category:
-                        localStorage.getItem(
-                            `diligence_task_${taskId}_category`
-                        ) || "",
-                    repeat:
-                        localStorage.getItem(
-                            `diligence_task_${taskId}_repeat`
-                        ) || "none",
-                    date:
-                        localStorage.getItem(
-                            `diligence_task_${taskId}_date`
-                        ) || "",
-                    time:
-                        localStorage.getItem(
-                            `diligence_task_${taskId}_time`
-                        ) || ""
-                });
             });
+
+            scheduleList.appendChild(scheduleItem);
+        });
     }
 
-    const today =
-        getTodayDate();
+    function loadUpcomingDeadlines(tasks) {
+        const deadlineList = document.querySelector(".upcoming-deadlines-card .deadline-list");
 
-    const upcomingDeadlines =
-        currentTasks
+        if (!deadlineList) {
+            return;
+        }
+
+        const taskIdsText = localStorage.getItem("diligence_task_ids") || "";
+        const currentTasks = [];
+
+        if (taskIdsText) {
+            taskIdsText
+                .split(",")
+                .filter(id => id)
+                .forEach(taskId => {
+                    const taskName = localStorage.getItem(`diligence_task_${taskId}_name`);
+
+                    if (taskName === null) {
+                        return;
+                    }
+
+                    currentTasks.push({
+                        id: taskId,
+                        name: taskName,
+                        section: localStorage.getItem(`diligence_task_${taskId}_section`) || "",
+                        completed: localStorage.getItem(`diligence_task_${taskId}_completed`) === "true",
+                        category: localStorage.getItem(`diligence_task_${taskId}_category`) || "",
+                        repeat: localStorage.getItem(`diligence_task_${taskId}_repeat`) || "none",
+                        date: localStorage.getItem(`diligence_task_${taskId}_date`) || "",
+                        time: localStorage.getItem(`diligence_task_${taskId}_time`) || ""
+                    });
+                });
+        }
+
+        const today = getTodayDate();
+
+        const upcomingDeadlines = currentTasks
             .filter(task => {
-                const date =
-                    normalizeDate(task.date);
+                const date = normalizeDate(task.date);
 
                 return (
                     isDeadline(task) &&
@@ -801,133 +778,83 @@ function loadUpcomingDeadlines(tasks) {
             })
             .slice(0, 3);
 
-    deadlineList.innerHTML = "";
+        deadlineList.innerHTML = "";
 
-    if (upcomingDeadlines.length === 0) {
-        showEmptyMessage(
-            deadlineList,
-            "No upcoming deadlines."
-        );
-        return;
-    }
-
-    upcomingDeadlines.forEach(task => {
-        const deadlineDate =
-            normalizeDate(task.date);
-
-        const dateObject =
-            new Date(
-                `${deadlineDate}T00:00:00`
-            );
-
-        const todayDate =
-            new Date(
-                `${today}T00:00:00`
-            );
-
-        const difference =
-            Math.ceil(
-                (
-                    dateObject.getTime() -
-                    todayDate.getTime()
-                ) / 86400000
-            );
-
-        let deadlineText =
-            "Due today";
-
-        if (difference === 1) {
-            deadlineText =
-                "Due tomorrow";
-        } else if (difference > 1) {
-            deadlineText =
-                `Due in ${difference} days`;
+        if (upcomingDeadlines.length === 0) {
+            showEmptyMessage(deadlineList, "No upcoming deadlines.");
+            return;
         }
 
-        const deadlineItem =
-            document.createElement("div");
+        upcomingDeadlines.forEach(task => {
+            const deadlineDate = normalizeDate(task.date);
+            const dateObject = new Date(`${deadlineDate}T00:00:00`);
+            const todayDate = new Date(`${today}T00:00:00`);
 
-        deadlineItem.className =
-            "deadline-item";
+            const difference = Math.ceil(
+                (dateObject.getTime() - todayDate.getTime()) / 86400000
+            );
 
-        deadlineItem.innerHTML = `
-            <div class="deadline-information">
-                <h3>${task.name}</h3>
-                <span>${deadlineText}</span>
-            </div>
+            let deadlineText = "Due today";
 
-            <div class="deadline-date">
-                <strong>${String(dateObject.getDate()).padStart(2, "0")}</strong>
-                <span>${dateObject.toLocaleDateString("en-US", { month: "short" }).toUpperCase()}</span>
-            </div>
-        `;
+            if (difference === 1) {
+                deadlineText = "Due tomorrow";
+            } else if (difference > 1) {
+                deadlineText = `Due in ${difference} days`;
+            }
 
-        deadlineList.appendChild(
-            deadlineItem
-        );
-    });
-}
+            const deadlineItem = document.createElement("div");
+
+            deadlineItem.className = "deadline-item";
+
+            deadlineItem.innerHTML = `
+                <div class="deadline-information">
+                    <h3>${task.name}</h3>
+                    <span>${deadlineText}</span>
+                </div>
+
+                <div class="deadline-date">
+                    <strong>${String(dateObject.getDate()).padStart(2, "0")}</strong>
+                    <span>${dateObject.toLocaleDateString("en-US", { month: "short" }).toUpperCase()}</span>
+                </div>
+            `;
+
+            deadlineList.appendChild(deadlineItem);
+        });
+    }
+
     function getProjectProgress(project) {
-        if (
-            !project.tasks ||
-            project.tasks.length === 0
-        ) {
+        if (!project.tasks || project.tasks.length === 0) {
             return 0;
         }
 
-        const completedTasks =
-            project.tasks.filter(
-                task => task.completed
-            ).length;
+        const completedTasks = project.tasks.filter(task => task.completed).length;
 
-        return Math.round(
-            (
-                completedTasks /
-                project.tasks.length
-            ) * 100
-        );
+        return Math.round((completedTasks / project.tasks.length) * 100);
     }
 
     function loadActiveProjects(projects) {
-        const projectList =
-            document.querySelector(
-                ".active-projects-card .project-list"
-            );
+        const projectList = document.querySelector(".active-projects-card .project-list");
 
         if (!projectList) {
             return;
         }
 
-        const activeProjects =
-            projects
-                .filter(
-                    project =>
-                        project.status ===
-                        "In Progress"
-                )
-                .slice(0, 3);
+        const activeProjects = projects
+            .filter(project => project.status === "In Progress")
+            .slice(0, 3);
 
         projectList.innerHTML = "";
 
         if (activeProjects.length === 0) {
-            showEmptyMessage(
-                projectList,
-                "No active projects."
-            );
+            showEmptyMessage(projectList, "No active projects.");
             return;
         }
 
         activeProjects.forEach(project => {
-            const progress =
-                getProjectProgress(
-                    project
-                );
+            const progress = getProjectProgress(project);
+            const projectItem = document.createElement("div");
 
-            const projectItem =
-                document.createElement("div");
-
-            projectItem.className =
-                "project-item";
+            projectItem.className = "project-item";
 
             projectItem.innerHTML = `
                 <div class="project-information">
@@ -940,241 +867,142 @@ function loadUpcomingDeadlines(tasks) {
                 </div>
 
                 <div class="project-progress">
-                    <div
-                        class="project-progress-bar"
-                        style="width: ${progress}%"
-                    ></div>
+                    <div class="project-progress-bar" style="width: ${progress}%"></div>
                 </div>
             `;
 
-            projectList.appendChild(
-                projectItem
-            );
+            projectList.appendChild(projectItem);
         });
     }
 
     function loadTodayTasks(tasks) {
-        const taskList =
-            document.querySelector(
-                ".todays-tasks-card .dashboard-task-list"
-            );
-
-        const summary =
-            document.getElementById(
-                "tasks-completed-summary"
-            );
+        const taskList = document.querySelector(".todays-tasks-card .dashboard-task-list");
+        const summary = document.getElementById("tasks-completed-summary");
 
         if (!taskList) {
             return;
         }
 
-        const allTodayTasks =
-            tasks.filter(
-                task =>
-                    isTodayTask(task)
-            );
+        const allTodayTasks = tasks.filter(task => isTodayTask(task));
 
         taskList.innerHTML = "";
 
         if (allTodayTasks.length === 0) {
-            showEmptyMessage(
-                taskList,
-                "No tasks for today."
-            );
+            showEmptyMessage(taskList, "No tasks for today.");
 
             if (summary) {
-                summary.textContent =
-                    "0 of 0 completed";
+                summary.textContent = "0 of 0 completed";
             }
 
             return;
         }
 
-        const todayTasks =
-            allTodayTasks.slice(0, 3);
-
-        const completedTasks =
-            allTodayTasks.filter(
-                task => task.completed
-            ).length;
+        const todayTasks = allTodayTasks.slice(0, 3);
+        const completedTasks = allTodayTasks.filter(task => task.completed).length;
 
         if (summary) {
-            summary.textContent =
-                `${completedTasks} of ${allTodayTasks.length} completed`;
+            summary.textContent = `${completedTasks} of ${allTodayTasks.length} completed`;
         }
 
         todayTasks.forEach(task => {
-            const taskItem =
-                document.createElement("label");
+            const taskItem = document.createElement("label");
 
-            taskItem.className =
-                "dashboard-task-item";
+            taskItem.className = "dashboard-task-item";
 
             if (task.completed) {
-                taskItem.classList.add(
-                    "completed"
-                );
+                taskItem.classList.add("completed");
             }
 
             taskItem.innerHTML = `
-                <input
-                    type="checkbox"
-                    ${task.completed ? "checked" : ""}
-                >
-
+                <input type="checkbox" ${task.completed ? "checked" : ""}>
                 <span class="dashboard-task-checkmark"></span>
-
-                <span class="dashboard-task-name">
-                    ${task.name}
-                </span>
+                <span class="dashboard-task-name">${task.name}</span>
             `;
 
-            const checkbox =
-                taskItem.querySelector(
-                    "input"
+            const checkbox = taskItem.querySelector("input");
+
+            checkbox.addEventListener("change", () => {
+                task.completed = checkbox.checked;
+
+                localStorage.setItem(
+                    `diligence_task_${task.id}_completed`,
+                    checkbox.checked ? "true" : "false"
                 );
 
-            checkbox.addEventListener(
-                "change",
-                () => {
-                    task.completed =
-                        checkbox.checked;
+                taskItem.classList.toggle("completed", checkbox.checked);
 
-                    localStorage.setItem(
-                        `diligence_task_${task.id}_completed`,
-                        checkbox.checked
-                            ? "true"
-                            : "false"
-                    );
+                const updatedCompletedTasks = allTodayTasks.filter(t => t.completed).length;
 
-                    taskItem.classList.toggle(
-                        "completed",
-                        checkbox.checked
-                    );
-
-                    const updatedCompletedTasks =
-                        allTodayTasks.filter(
-                            currentTask =>
-                                currentTask.completed
-                        ).length;
-
-                    if (summary) {
-                        summary.textContent =
-                            `${updatedCompletedTasks} of ${allTodayTasks.length} completed`;
-                    }
+                if (summary) {
+                    summary.textContent = `${updatedCompletedTasks} of ${allTodayTasks.length} completed`;
                 }
-            );
+            });
 
-            taskList.appendChild(
-                taskItem
-            );
+            taskList.appendChild(taskItem);
         });
     }
 
     function loadStatistics(tasks, projects) {
-        const tasksTodayCount =
-            document.getElementById(
-                "tasks-today-count"
+        const tasksTodayCount = document.getElementById("tasks-today-count");
+        const upcomingDeadlinesCount = document.getElementById("upcoming-deadlines-count");
+        const activeProjectsCount = document.getElementById("active-projects-count");
+
+        const today = getTodayDate();
+
+        const todayScheduleCount = tasks.filter(task => {
+            return (
+                isSchedule(task) &&
+                normalizeDate(task.date) === today
             );
+        }).length;
 
-        const upcomingDeadlinesCount =
-            document.getElementById(
-                "upcoming-deadlines-count"
+        const upcomingDeadlineCount = tasks.filter(task => {
+            const date = normalizeDate(task.date);
+
+            return (
+                isDeadline(task) &&
+                date &&
+                date >= today
             );
+        }).length;
 
-        const activeProjectsCount =
-            document.getElementById(
-                "active-projects-count"
-            );
-
-        const today =
-            getTodayDate();
-
-        const todayScheduleCount =
-            tasks.filter(task => {
-                return (
-                    isSchedule(task) &&
-                    normalizeDate(task.date) === today
-                );
-            }).length;
-
-        const upcomingDeadlineCount =
-            tasks.filter(task => {
-                const date =
-                    normalizeDate(task.date);
-
-                return (
-                    isDeadline(task) &&
-                    date &&
-                    date >= today
-                );
-            }).length;
-
-        const activeProjectCount =
-            projects.filter(
-                project =>
-                    project.status ===
-                    "In Progress"
-            ).length;
+        const activeProjectCount = projects.filter(project => project.status === "In Progress").length;
 
         if (tasksTodayCount) {
-            tasksTodayCount.textContent =
-                todayScheduleCount;
+            tasksTodayCount.textContent = todayScheduleCount;
         }
 
         if (upcomingDeadlinesCount) {
-            upcomingDeadlinesCount.textContent =
-                upcomingDeadlineCount;
+            upcomingDeadlinesCount.textContent = upcomingDeadlineCount;
         }
 
         if (activeProjectsCount) {
-            activeProjectsCount.textContent =
-                activeProjectCount;
+            activeProjectsCount.textContent = activeProjectCount;
         }
     }
 
     function loadDashboard() {
-        const tasks =
-            loadTasks();
-
-        const projects =
-            loadProjects();
+        const tasks = loadTasks();
+        const projects = loadProjects();
 
         loadDashboardDate();
-        loadStatistics(
-            tasks,
-            projects
-        );
-        loadTodaySchedule(
-            tasks
-        );
-        loadUpcomingDeadlines(
-            tasks
-        );
-        loadActiveProjects(
-            projects
-        );
-        loadTodayTasks(
-            tasks
-        );
+        loadStatistics(tasks, projects);
+        loadTodaySchedule(tasks);
+        loadUpcomingDeadlines(tasks);
+        loadActiveProjects(projects);
+        loadTodayTasks(tasks);
         loadGoals();
+        loadStickyNotes();
     }
 
     loadDashboard();
 
     setInterval(() => {
-        const tasks =
-            loadTasks();
-
-        updateScheduleCountdowns(
-            tasks
-        );
+        const tasks = loadTasks();
+        loadTodaySchedule(tasks);
     }, 30000);
 
-    window.addEventListener(
-        "storage",
-        () => {
-            loadDashboard();
-        }
-    );
+    window.addEventListener("storage", () => {
+        loadDashboard();
+    });
 });
