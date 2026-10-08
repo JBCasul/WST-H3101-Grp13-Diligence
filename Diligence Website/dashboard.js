@@ -508,346 +508,365 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function loadTodaySchedule(tasks) {
-        const scheduleList =
-            document.querySelector(
-                ".today-schedule-card .schedule-list"
-            );
+function loadTodaySchedule(tasks) {
+    const scheduleList =
+        document.querySelector(
+            ".today-schedule-card .schedule-list"
+        );
 
-        if (!scheduleList) {
-            return;
-        }
-
-        const today =
-            getTodayDate();
-
-        const completedSchedules =
-            getCompletedScheduleKeys();
-
-        const todaySchedule =
-            tasks
-                .filter(task => {
-                    const scheduleKey =
-                        `${task.id}-${today}`;
-
-                    return (
-                        isSchedule(task) &&
-                        normalizeDate(task.date) === today &&
-                        !completedSchedules.includes(
-                            scheduleKey
-                        )
-                    );
-                })
-                .sort((firstTask, secondTask) => {
-                    const firstTime =
-                        parseTaskTime(
-                            firstTask.time
-                        );
-
-                    const secondTime =
-                        parseTaskTime(
-                            secondTask.time
-                        );
-
-                    if (!firstTime && !secondTime) {
-                        return 0;
-                    }
-
-                    if (!firstTime) {
-                        return 1;
-                    }
-
-                    if (!secondTime) {
-                        return -1;
-                    }
-
-                    return (
-                        firstTime.hour * 60 +
-                        firstTime.minute
-                    ) - (
-                        secondTime.hour * 60 +
-                        secondTime.minute
-                    );
-                })
-                .slice(0, 3);
-
-        scheduleList.innerHTML = "";
-
-        if (todaySchedule.length === 0) {
-            showEmptyMessage(
-                scheduleList,
-                "No schedule for today."
-            );
-            return;
-        }
-
-        todaySchedule.forEach(task => {
-            const time =
-                formatTime(task.time);
-
-            const scheduleItem =
-                document.createElement("div");
-
-            scheduleItem.className =
-                "schedule-item";
-
-            scheduleItem.style.display =
-                "grid";
-
-            scheduleItem.style.gridTemplateColumns =
-                "62px 14px minmax(0, 1fr) auto 20px";
-
-            scheduleItem.style.alignItems =
-                "center";
-
-            scheduleItem.innerHTML = `
-                <div class="schedule-time">
-                    <span>${time.hour}:${time.minute}</span>
-                    <small>${time.period}</small>
-                </div>
-
-                <div class="schedule-indicator"></div>
-
-                <div class="schedule-information">
-                    <h3>${task.name}</h3>
-                    <span>${task.category || "Schedule"}</span>
-                </div>
-
-                <div class="schedule-countdown">
-                    ${formatCountdown(task)}
-                </div>
-
-                <label class="schedule-checkbox">
-                    <input type="checkbox">
-                    <span class="schedule-checkmark"></span>
-                </label>
-            `;
-
-            const checkbox =
-                scheduleItem.querySelector(
-                    ".schedule-checkbox input"
-                );
-
-            checkbox.addEventListener(
-                "change",
-                () => {
-                    if (!checkbox.checked) {
-                        return;
-                    }
-
-                    const finished =
-                        window.confirm(
-                            "Is this schedule finished for today?"
-                        );
-
-                    if (finished) {
-                        const scheduleKey =
-                            `${task.id}-${today}`;
-
-                        saveCompletedScheduleKey(
-                            scheduleKey
-                        );
-
-                        loadDashboard();
-                    } else {
-                        checkbox.checked = false;
-                    }
-                }
-            );
-
-            scheduleList.appendChild(
-                scheduleItem
-            );
-        });
+    if (!scheduleList) {
+        return;
     }
 
-    function updateScheduleCountdowns(tasks) {
-        const scheduleList =
-            document.querySelector(
-                ".today-schedule-card .schedule-list"
-            );
+    const taskIdsText =
+        localStorage.getItem(
+            "diligence_task_ids"
+        ) || "";
 
-        if (!scheduleList) {
-            return;
-        }
+    const currentTasks = [];
 
-        const today =
-            getTodayDate();
-
-        const completedSchedules =
-            getCompletedScheduleKeys();
-
-        const todaySchedule =
-            tasks
-                .filter(task => {
-                    const scheduleKey =
-                        `${task.id}-${today}`;
-
-                    return (
-                        isSchedule(task) &&
-                        normalizeDate(task.date) === today &&
-                        !completedSchedules.includes(
-                            scheduleKey
-                        )
+    if (taskIdsText) {
+        taskIdsText
+            .split(",")
+            .filter(id => id)
+            .forEach(taskId => {
+                const taskName =
+                    localStorage.getItem(
+                        `diligence_task_${taskId}_name`
                     );
-                })
-                .sort((firstTask, secondTask) => {
-                    const firstTime =
-                        parseTaskTime(firstTask.time);
 
-                    const secondTime =
-                        parseTaskTime(secondTask.time);
-
-                    if (!firstTime && !secondTime) {
-                        return 0;
-                    }
-
-                    if (!firstTime) {
-                        return 1;
-                    }
-
-                    if (!secondTime) {
-                        return -1;
-                    }
-
-                    return (
-                        firstTime.hour * 60 +
-                        firstTime.minute
-                    ) - (
-                        secondTime.hour * 60 +
-                        secondTime.minute
-                    );
-                })
-                .slice(0, 3);
-
-        const scheduleItems =
-            scheduleList.querySelectorAll(
-                ".schedule-item"
-            );
-
-        scheduleItems.forEach(
-            (scheduleItem, index) => {
-                const task =
-                    todaySchedule[index];
-
-                if (!task) {
+                if (taskName === null) {
                     return;
                 }
 
-                const countdown =
-                    scheduleItem.querySelector(
-                        ".schedule-countdown"
+                currentTasks.push({
+                    id: taskId,
+                    name: taskName,
+                    section:
+                        localStorage.getItem(
+                            `diligence_task_${taskId}_section`
+                        ) || "",
+                    completed:
+                        localStorage.getItem(
+                            `diligence_task_${taskId}_completed`
+                        ) === "true",
+                    category:
+                        localStorage.getItem(
+                            `diligence_task_${taskId}_category`
+                        ) || "",
+                    repeat:
+                        localStorage.getItem(
+                            `diligence_task_${taskId}_repeat`
+                        ) || "none",
+                    date:
+                        localStorage.getItem(
+                            `diligence_task_${taskId}_date`
+                        ) || "",
+                    time:
+                        localStorage.getItem(
+                            `diligence_task_${taskId}_time`
+                        ) || ""
+                });
+            });
+    }
+
+    const today =
+        getTodayDate();
+
+    const completedSchedules =
+        getCompletedScheduleKeys();
+
+    const todaySchedule =
+        currentTasks
+            .filter(task => {
+                const scheduleKey =
+                    `${task.id}-${today}`;
+
+                return (
+                    isSchedule(task) &&
+                    normalizeDate(task.date) === today &&
+                    !task.completed &&
+                    !completedSchedules.includes(
+                        scheduleKey
+                    )
+                );
+            })
+            .sort((firstTask, secondTask) => {
+                const firstTime =
+                    parseTaskTime(
+                        firstTask.time
                     );
 
-                if (countdown) {
-                    countdown.textContent =
-                        formatCountdown(task);
+                const secondTime =
+                    parseTaskTime(
+                        secondTask.time
+                    );
+
+                if (!firstTime && !secondTime) {
+                    return 0;
+                }
+
+                if (!firstTime) {
+                    return 1;
+                }
+
+                if (!secondTime) {
+                    return -1;
+                }
+
+                return (
+                    firstTime.hour * 60 +
+                    firstTime.minute
+                ) - (
+                    secondTime.hour * 60 +
+                    secondTime.minute
+                );
+            })
+            .slice(0, 3);
+
+    scheduleList.innerHTML = "";
+
+    if (todaySchedule.length === 0) {
+        showEmptyMessage(
+            scheduleList,
+            "No schedule for today."
+        );
+        return;
+    }
+
+    todaySchedule.forEach(task => {
+        const time =
+            formatTime(task.time);
+
+        const scheduleItem =
+            document.createElement("div");
+
+        scheduleItem.className =
+            "schedule-item";
+
+        scheduleItem.style.display =
+            "grid";
+
+        scheduleItem.style.gridTemplateColumns =
+            "62px 14px minmax(0, 1fr) auto 20px";
+
+        scheduleItem.style.alignItems =
+            "center";
+
+        scheduleItem.innerHTML = `
+            <div class="schedule-time">
+                <span>${time.hour}:${time.minute}</span>
+                <small>${time.period}</small>
+            </div>
+
+            <div class="schedule-indicator"></div>
+
+            <div class="schedule-information">
+                <h3>${task.name}</h3>
+                <span>${task.category || "Schedule"}</span>
+            </div>
+
+            <div class="schedule-countdown">
+                ${formatCountdown(task)}
+            </div>
+
+            <label class="schedule-checkbox">
+                <input type="checkbox">
+                <span class="schedule-checkmark"></span>
+            </label>
+        `;
+
+        const checkbox =
+            scheduleItem.querySelector(
+                ".schedule-checkbox input"
+            );
+
+        checkbox.addEventListener(
+            "change",
+            () => {
+                if (!checkbox.checked) {
+                    return;
+                }
+
+                const finished =
+                    window.confirm(
+                        "Is this schedule finished for today?"
+                    );
+
+                if (finished) {
+                    const scheduleKey =
+                        `${task.id}-${today}`;
+
+                    saveCompletedScheduleKey(
+                        scheduleKey
+                    );
+
+                    loadDashboard();
+                } else {
+                    checkbox.checked = false;
                 }
             }
         );
+
+        scheduleList.appendChild(
+            scheduleItem
+        );
+    });
+}
+
+function loadUpcomingDeadlines(tasks) {
+    const deadlineList =
+        document.querySelector(
+            ".upcoming-deadlines-card .deadline-list"
+        );
+
+    if (!deadlineList) {
+        return;
     }
 
-    function loadUpcomingDeadlines(tasks) {
-        const deadlineList =
-            document.querySelector(
-                ".upcoming-deadlines-card .deadline-list"
-            );
+    const taskIdsText =
+        localStorage.getItem(
+            "diligence_task_ids"
+        ) || "";
 
-        if (!deadlineList) {
-            return;
-        }
+    const currentTasks = [];
 
-        const today =
-            getTodayDate();
-
-        const upcomingDeadlines =
-            tasks
-                .filter(task => {
-                    const date =
-                        normalizeDate(task.date);
-
-                    return (
-                        isDeadline(task) &&
-                        date &&
-                        date >= today
+    if (taskIdsText) {
+        taskIdsText
+            .split(",")
+            .filter(id => id)
+            .forEach(taskId => {
+                const taskName =
+                    localStorage.getItem(
+                        `diligence_task_${taskId}_name`
                     );
-                })
-                .sort((firstTask, secondTask) => {
-                    return (
-                        normalizeDate(firstTask.date).localeCompare(
-                            normalizeDate(secondTask.date)
-                        )
-                    );
-                })
-                .slice(0, 3);
 
-        deadlineList.innerHTML = "";
+                if (taskName === null) {
+                    return;
+                }
 
-        if (upcomingDeadlines.length === 0) {
-            showEmptyMessage(
-                deadlineList,
-                "No upcoming deadlines."
-            );
-            return;
-        }
-
-        upcomingDeadlines.forEach(task => {
-            const deadlineDate =
-                normalizeDate(task.date);
-
-            const dateObject =
-                new Date(
-                    `${deadlineDate}T00:00:00`
-                );
-
-            const todayDate =
-                new Date(
-                    `${today}T00:00:00`
-                );
-
-            const difference =
-                Math.ceil(
-                    (
-                        dateObject.getTime() -
-                        todayDate.getTime()
-                    ) / 86400000
-                );
-
-            let deadlineText =
-                "Due today";
-
-            if (difference === 1) {
-                deadlineText =
-                    "Due tomorrow";
-            } else if (difference > 1) {
-                deadlineText =
-                    `Due in ${difference} days`;
-            }
-
-            const deadlineItem =
-                document.createElement("div");
-
-            deadlineItem.className =
-                "deadline-item";
-
-            deadlineItem.innerHTML = `
-                <div class="deadline-information">
-                    <h3>${task.name}</h3>
-                    <span>${deadlineText}</span>
-                </div>
-
-                <div class="deadline-date">
-                    <strong>${String(dateObject.getDate()).padStart(2, "0")}</strong>
-                    <span>${dateObject.toLocaleDateString("en-US", { month: "short" }).toUpperCase()}</span>
-                </div>
-            `;
-
-            deadlineList.appendChild(
-                deadlineItem
-            );
-        });
+                currentTasks.push({
+                    id: taskId,
+                    name: taskName,
+                    section:
+                        localStorage.getItem(
+                            `diligence_task_${taskId}_section`
+                        ) || "",
+                    completed:
+                        localStorage.getItem(
+                            `diligence_task_${taskId}_completed`
+                        ) === "true",
+                    category:
+                        localStorage.getItem(
+                            `diligence_task_${taskId}_category`
+                        ) || "",
+                    repeat:
+                        localStorage.getItem(
+                            `diligence_task_${taskId}_repeat`
+                        ) || "none",
+                    date:
+                        localStorage.getItem(
+                            `diligence_task_${taskId}_date`
+                        ) || "",
+                    time:
+                        localStorage.getItem(
+                            `diligence_task_${taskId}_time`
+                        ) || ""
+                });
+            });
     }
 
+    const today =
+        getTodayDate();
+
+    const upcomingDeadlines =
+        currentTasks
+            .filter(task => {
+                const date =
+                    normalizeDate(task.date);
+
+                return (
+                    isDeadline(task) &&
+                    date &&
+                    date >= today &&
+                    !task.completed
+                );
+            })
+            .sort((firstTask, secondTask) => {
+                return (
+                    normalizeDate(firstTask.date).localeCompare(
+                        normalizeDate(secondTask.date)
+                    )
+                );
+            })
+            .slice(0, 3);
+
+    deadlineList.innerHTML = "";
+
+    if (upcomingDeadlines.length === 0) {
+        showEmptyMessage(
+            deadlineList,
+            "No upcoming deadlines."
+        );
+        return;
+    }
+
+    upcomingDeadlines.forEach(task => {
+        const deadlineDate =
+            normalizeDate(task.date);
+
+        const dateObject =
+            new Date(
+                `${deadlineDate}T00:00:00`
+            );
+
+        const todayDate =
+            new Date(
+                `${today}T00:00:00`
+            );
+
+        const difference =
+            Math.ceil(
+                (
+                    dateObject.getTime() -
+                    todayDate.getTime()
+                ) / 86400000
+            );
+
+        let deadlineText =
+            "Due today";
+
+        if (difference === 1) {
+            deadlineText =
+                "Due tomorrow";
+        } else if (difference > 1) {
+            deadlineText =
+                `Due in ${difference} days`;
+        }
+
+        const deadlineItem =
+            document.createElement("div");
+
+        deadlineItem.className =
+            "deadline-item";
+
+        deadlineItem.innerHTML = `
+            <div class="deadline-information">
+                <h3>${task.name}</h3>
+                <span>${deadlineText}</span>
+            </div>
+
+            <div class="deadline-date">
+                <strong>${String(dateObject.getDate()).padStart(2, "0")}</strong>
+                <span>${dateObject.toLocaleDateString("en-US", { month: "short" }).toUpperCase()}</span>
+            </div>
+        `;
+
+        deadlineList.appendChild(
+            deadlineItem
+        );
+    });
+}
     function getProjectProgress(project) {
         if (
             !project.tasks ||
@@ -1159,4 +1178,3 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     );
 });
-
